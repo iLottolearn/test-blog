@@ -1,0 +1,106 @@
+{% extends 'blog/blog_list.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ Blog.title }}
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+{% endblock %}
+
+{% block left_content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-10">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class="time-readings">
+                        <span>{{ blog.created_time|date:"Y-m-d" }}</span><br>
+                        <span>{{ blog.get_read_num }} Reading</span>
+                    </div>
+                      <h2 class="blog_detail_title">{{ blog.title }}</h2>
+                    <!--<p>-->
+                    <!--分类：<a href="{% url 'blog_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a>&nbsp;&nbsp;-->
+                    <!--</p>-->
+                    <div class="blog-content">
+                        <P>{{ blog.content|safe }}</P>
+                        <hr>
+                        <p>--EOF--</p>
+                        <br>
+                        <div class="blog-type">
+                           <p><span>发表时间：{{ blog.created_time }}</span>&nbsp;&nbsp;&nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="{% url 'blog_with_type' blog.blog_type.pk %}"> {{ blog.blog_type }}</a></p>
+                       </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="blog-more">
+                    <nav aria-label="...">
+                      <ul class="pager">
+                        {% if previous_blog %}
+                        <li class="previous"><a href="{% url 'blog_detail' previous_blog.pk %}"><span aria-hidden="true">&larr;</span> {{ previous_blog.title }}</a></li>
+                        {% else %}
+                         <li class="previous"><a><span aria-hidden="true">&larr;</span> 没有了</a></li>
+                          {% endif %}
+                          {% if next_blog %}
+                          <li class="next"><a href="{% url 'blog_detail' next_blog.pk %}">{{ next_blog.title }} <span aria-hidden="true">&rarr;</span></a></li>
+                          {% else %}
+                          <li class="next"><a>没有了 <span aria-hidden="true">&rarr;</span></a></li>
+                          {% endif %}
+                      </ul>
+                    </nav>
+                    <!--<p>-->
+                        <!--上一篇:-->
+                        <!--{% if previous_blog %}-->
+                        <!--<a href="{% url 'blog_detail' previous_blog.pk %}">{{ previous_blog.title }}</a>-->
+                        <!--{% else %}-->
+                        <!--没有了-->
+                        <!--{% endif %}-->
+                        <!--下一篇:-->
+                        <!--{% if next_blog %}-->
+                        <!--<a href="{% url 'blog_detail' next_blog.pk %}">{{ next_blog.title }}</a>-->
+                        <!--{% else %}-->
+                        <!--没有了-->
+                        <!--{% endif %}-->
+                    <!--</p>-->
+                </div>
+                {% if site.gitalk.enable %}
+                <div id="gitalk-container"></div>
+                    <script type="text/javascript">
+                    var gitalk = new Gitalk({
+
+                    // gitalk的主要参数
+                        clientID:'e7ccc4f0fdf0e5dddefc',
+                        clientSecret: 'f897f9d03f6ba862de55924c720a1345516a8a42',
+                        repo: 'test-blog',
+                        owner: 'iLottolearn',
+                        admin: ['iLottolearn'],
+                        id: 'window.location.pathname',
+
+                    });
+                    gitalk.render('gitalk-container');
+                </script>
+                {% endif %}
+                <!--<div id="gitalk-container">-->
+                    <!--const gitalk = new Gitalk({-->
+                      <!--clientID: 'iLottolearn',-->
+                      <!--clientSecret: 'nishizhuba00',-->
+                      <!--repo: 'https://github.com/iLottolearn/Blog',-->
+                      <!--owner: 'L',-->
+                      <!--admin: ['GitHub repo owner and collaborators, only these guys can initialize github issues'],-->
+                      <!--id: location.pathname,      // Ensure uniqueness and length less than 50-->
+                      <!--distractionFreeMode: false  // Facebook-like distraction free mode-->
+                    <!--})-->
+
+                    <!--gitalk.render('gitalk-container')-->
+                <!--</div>-->
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+
